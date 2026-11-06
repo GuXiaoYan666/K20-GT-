@@ -1,0 +1,22 @@
+{
+  "name": "k20-lyric-bridge",
+  "version": "1.0.0",
+  "description": "MCHOSE K20 GT 键盘歌词引擎 · M HUB 插件（SMTC 媒体监听 + 多源歌词检索 + 原生内嵌歌词页）",
+  "private": true,
+  "main": "lyric-hub/index.js",
+  "scripts": {
+    "start": "node lyric-hub/backend/server.js",
+    "plugin:install": "powershell -ExecutionPolicy Bypass -File install.ps1 -Mode Install",
+    "plugin:uninstall": "powershell -ExecutionPolicy Bypass -File install.ps1 -Mode Uninstall"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "node-hid": "^3.2.0"
+  },
+  "devDependencies": {
+    "@electron/asar": "^4.3.1"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+# ---- 依赖 ----
+node_modules/
+lyric-hub/backend/node_modules/
+
+# ---- 运行时缓存 / 本地配置 ----
+data/
+lyric-hub/backend/data/
+*.log
+
+# ---- 打包 / 调试产物 ----
+*.asar
+*.asar.*
+*.jsc
+*.asar.unpacked/
+_asar_*/
+_test_app.asar.unpacked/
+pet-hub-patch-*/
+
+# ---- 一次性调试脚本与诊断文件 ----
+/index.js
+/bytecode-loader.cjs
+/debug-selectors.js
+/_list_asar.js
+/_list_out.js
+/_read_main.js
+/_debug_selectors.log
+.screenshots/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini

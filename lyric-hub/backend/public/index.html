@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>K20 歌词引擎 · MCHOSE K20 GT</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c0e10'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='12' font-weight='700' fill='%23a9d6ff' text-anchor='middle'%3EK20%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">K20</div>
+      <div class="brand-text">
+        <h1>歌词引擎</h1>
+        <p>MCHOSE K20 GT · LYRICS BRIDGE</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="chip" id="deviceChip"><i class="dot"></i><span>设备检测中</span></div>
+      <div class="chip" id="playerChip"><i class="dot"></i><span>未播放</span></div>
+      <button class="power" id="powerBtn" title="启用 / 暂停上屏" aria-label="启用或暂停上屏">
+        <span class="power-track"><span class="power-knob"></span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="column main-column">
+      <div class="panel screen-panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="eyebrow">DEVICE SCREEN</span>
+            <h2>设备屏幕 · 实时预览</h2>
+          </div>
+          <div class="badges">
+            <span class="badge" id="modeBadge">扩展模式</span>
+            <span class="badge mono" id="byteBadge">0 / 51 B</span>
+          </div>
+        </div>
+        <div class="device-screen" id="deviceScreen">
+          <div class="screen-dots"></div>
+          <div class="screen-content">
+            <div class="screen-line" id="screenLine">等待播放</div>
+          </div>
+          <div class="screen-meta">
+            <span class="mono" id="screenTime">00:00</span>
+            <span id="screenTrack">K20 GT 歌词字幕</span>
+          </div>
+        </div>
+        <div class="screen-foot">
+          <span id="screenHint">检测到播放后，歌词会自动同步到键盘屏幕</span>
+          <div class="foot-actions">
+            <button class="text-btn" id="testBtn">测试上屏</button>
+            <button class="text-btn" id="restoreBtn">恢复原屏</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel lyric-panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="eyebrow">LYRICS</span>
+            <h2>歌词时间轴</h2>
+          </div>
+          <div class="lyric-source" id="lyricSource">—</div>
+        </div>
+        <div class="lyric-list" id="lyricList"></div>
+        <div class="lyric-empty" id="lyricEmpty">
+          <p>等待播放器播放音乐</p>
+          <p class="sub">支持汽水音乐、酷狗、酷我、洛雪音乐，无需单独配置</p>
+        </div>
+      </div>
+
+      <div class="panel np-panel">
+        <div class="np-cover" id="npCover"><span id="npInitial">♪</span></div>
+        <div class="np-body">
+          <div class="np-line">
+            <span class="np-state" id="npState">空闲</span>
+            <span class="np-app" id="npApp">—</span>
+          </div>
+          <h3 id="npTitle">未在播放</h3>
+          <p id="npArtist">打开任意播放器播放歌曲即可</p>
+          <div class="progress">
+            <span class="progress-fill" id="progressFill"></span>
+          </div>
+          <div class="progress-meta">
+            <span class="mono" id="npPos">00:00</span>
+            <span class="mono" id="npDur">00:00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="column side-column">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="eyebrow">SETTINGS</span>
+            <h2>上屏设置</h2>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>上屏模式</label>
+          <div class="segmented" data-key="mode">
+            <button data-value="extended">扩展歌词</button>
+            <button data-value="simple">简洁单行</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>对齐方式</label>
+          <div class="segmented" data-key="align">
+            <button data-value="0">左</button>
+            <button data-value="1">中</button>
+            <button data-value="2">右</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>歌词动画 <span class="mono" id="animValue">9</span></label>
+          <input type="range" id="animRange" min="0" max="9" step="1" value="9" />
+        </div>
+
+        <div class="setting-row switch-row">
+          <label for="transSwitch">显示中文翻译</label>
+          <button class="switch" id="transSwitch" role="switch" aria-checked="false"><span></span></button>
+        </div>
+        <div class="setting-row switch-row">
+          <label for="idleSwitch">空闲时恢复原屏</label>
+          <button class="switch" id="idleSwitch" role="switch" aria-checked="false"><span></span></button>
+        </div>
+
+        <div class="setting-row">
+          <label>优先播放器</label>
+          <select id="playerSelect">
+            <option value="">自动</option>
+            <option value="汽水音乐">汽水音乐</option>
+            <option value="酷狗音乐">酷狗音乐</option>
+            <option value="酷我音乐">酷我音乐</option>
+            <option value="洛雪音乐">洛雪音乐</option>
+          </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="manual">
+          <p class="manual-title">手动匹配歌词</p>
+          <div class="manual-fields">
+            <input id="manualTitle" placeholder="歌曲名" />
+            <input id="manualArtist" placeholder="歌手（可选）" />
+            <button class="primary-btn" id="manualBtn">检索</button>
+          </div>
+          <p class="manual-hint">当播放器读取到的歌名不准时，可手动指定</p>
+        </div>
+      </div>
+
+      <div class="panel status-panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="eyebrow">STATUS</span>
+            <h2>运行状态</h2>
+          </div>
+          <button class="text-btn" id="reconnectBtn">重连设备</button>
+        </div>
+        <ul class="status-list">
+          <li><span>K20 GT</span><b id="stDevice">检测中</b></li>
+          <li><span>上屏通道</span><b id="stChannel" class="mono">HID · 0xBC</b></li>
+          <li><span>歌词来源</span><b id="stSource">—</b></li>
+          <li><span>已发送</span><b id="stSent">—</b></li>
+          <li><span>媒体监听</span><b id="stSmtc">正常</b></li>
+        </ul>
+      </div>
+
+      <div class="panel log-panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="eyebrow">LOG</span>
+            <h2>运行日志</h2>
+          </div>
+        </div>
+        <div class="log-list" id="logList"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>仅在本机运行 · 不上传任何数据</span>
+    <span class="mono">MCHOSE K20 GT · MC PROTOCOL / 0xBC</span>
+  </footer>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
